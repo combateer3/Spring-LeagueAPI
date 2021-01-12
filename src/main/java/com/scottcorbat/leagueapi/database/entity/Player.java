@@ -1,10 +1,10 @@
 package com.scottcorbat.leagueapi.database.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"accountId", "summonerId"})})
 public class Player {
 
     @Id
@@ -16,6 +16,13 @@ public class Player {
     private String accountId;
     private String summonerId;
     private String puuId;
+
+    @OneToMany(mappedBy = "player")
+    private Set<SummonerMatch> summonerMatches;
+
+    public Set<SummonerMatch> getSummonerMatches() {
+        return summonerMatches;
+    }
 
     public String getSummonerId() {
         return summonerId;
