@@ -17,13 +17,6 @@ public class Player {
     private String summonerId;
     private String puuId;
 
-    @OneToMany(mappedBy = "player")
-    private Set<SummonerMatch> summonerMatches;
-
-    public Set<SummonerMatch> getSummonerMatches() {
-        return summonerMatches;
-    }
-
     public String getSummonerId() {
         return summonerId;
     }
