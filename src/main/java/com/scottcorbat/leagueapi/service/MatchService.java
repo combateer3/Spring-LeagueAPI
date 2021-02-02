@@ -5,7 +5,7 @@ import com.scottcorbat.leagueapi.database.entity.SummonerMatch;
 import com.scottcorbat.leagueapi.database.repository.PlayerStatsRepository;
 import com.scottcorbat.leagueapi.database.repository.SummonerMatchRepository;
 import com.scottcorbat.leagueapi.ui.request.AddMatchRequest;
-import com.scottcorbat.leagueapi.ui.request.PlayerStatRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,26 +22,14 @@ public class MatchService {
     }
 
     public SummonerMatch addMatch(AddMatchRequest req) {
-        SummonerMatch match = new SummonerMatch();
-        match.setMatchId(req.getMatchId());
-        match.setLength(req.getLength());
-        match.setQueueId(req.getQueueId());
-        match.setCreated(req.getCreated());
+        ModelMapper mapper = new ModelMapper();
+        SummonerMatch match = mapper.map(req, SummonerMatch.class);
 
         SummonerMatch saved = matchRepo.save(match);
 
-        //copy over player stats
-        for (PlayerStatRequest ps : req.getPlayerStats()) {
-            PlayerStats entity = new PlayerStats();
-            entity.setMatch(match);
-
-            entity.setSummonerId(ps.getSummonerId());
-            entity.setSummonerName(ps.getSummonerName());
-            entity.setItemIds(ps.getItemIds());
-
-            statRepo.save(entity);
-
-            match.getPlayerStats().add(entity);
+        for (PlayerStats ps : match.getPlayerStats()) {
+            ps.setMatch(saved);
+            statRepo.save(ps);
         }
 
         return saved;
