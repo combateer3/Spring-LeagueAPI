@@ -9,7 +9,7 @@ public class Player {
 
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
 
     private String username;
 
@@ -33,7 +33,7 @@ public class Player {
         this.puuId = puuId;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

@@ -9,7 +9,7 @@ public class SummonerMatch {
 
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
 
     //game meta stuff
     private String matchId;
@@ -60,7 +60,7 @@ public class SummonerMatch {
         this.length = length;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
